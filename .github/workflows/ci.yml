@@ -60,6 +60,44 @@ jobs:
             exit 1
           fi
 
+      # Exercises the happy path (outputs, job summary) against a stub CLI,
+      # so the deployment API is never contacted.
+      - name: Verify a successful deployment with a stub CLI
+        run: |
+          set -euo pipefail
+
+          workspace="$(mktemp -d)"
+          echo 'addEventListener("fetch", (e) => e.respondWith(new Response("ok")));' > "${workspace}/bundle.js"
+
+          # The stub script is written literally: its "$1" belongs to the
+          # stub's own shell, not to this one.
+          # shellcheck disable=SC2016
+          printf '%s\n' \
+            '#!/usr/bin/env bash' \
+            'set -euo pipefail' \
+            'if [ "${1:-}" = "version" ]; then echo "arvan stub 0.0.0"; exit 0; fi' \
+            'echo "ID: ci-deployment-id"' \
+            'echo "Status: pending"' \
+            'echo "Created At: 2026-01-01T00:00:00Z"' \
+            > "${workspace}/stub-arvan"
+          chmod +x "${workspace}/stub-arvan"
+
+          docker run --rm \
+            -v "${workspace}:/github/workspace" \
+            -w /github/workspace \
+            -e ARVAN_API_KEY="not-a-real-token" \
+            -e ARVAN_APP="ci-smoke-test" \
+            -e ARVAN_FILE="bundle.js" \
+            -e ARVAN_BIN="/github/workspace/stub-arvan" \
+            -e GITHUB_OUTPUT="/github/workspace/outputs.txt" \
+            -e GITHUB_STEP_SUMMARY="/github/workspace/summary.md" \
+            ar-ec-action:ci
+
+          grep -q '^id=ci-deployment-id$' "${workspace}/outputs.txt"
+          grep -q '^status=pending$' "${workspace}/outputs.txt"
+          grep -q '^created-at=2026-01-01T00:00:00Z$' "${workspace}/outputs.txt"
+          grep -q 'ci-deployment-id' "${workspace}/summary.md"
+
   integration:
     name: Run the action
     runs-on: ubuntu-latest
