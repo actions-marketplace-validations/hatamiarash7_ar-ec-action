@@ -37,11 +37,13 @@ RUN set -euo pipefail; \
 FROM debian:${DEBIAN_TAG}
 
 ARG ARVAN_CLI_VERSION=0.4.0
+# Keep in sync with the releases listed in CHANGELOG.md.
+ARG ACTION_VERSION=1.0.3
 
 LABEL maintainer="Arash Hatami <hatamiarash7@gmail.com>" \
     org.opencontainers.image.title="ArvanCloud Edge Computing Action" \
     org.opencontainers.image.description="Deploy new changes to ArvanCloud Edge Computing" \
-    org.opencontainers.image.version="1.0.1" \
+    org.opencontainers.image.version="${ACTION_VERSION}" \
     org.opencontainers.image.authors="hatamiarash7" \
     org.opencontainers.image.vendor="hatamiarash7" \
     org.opencontainers.image.licenses="MIT" \
@@ -55,8 +57,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=downloader /usr/local/bin/arvan /usr/local/bin/arvan
-COPY entrypoint.sh /entrypoint.sh
-
-RUN chmod +x /entrypoint.sh
+COPY --chmod=0755 entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
