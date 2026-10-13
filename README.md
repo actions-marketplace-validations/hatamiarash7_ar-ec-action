@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Marketplace](https://img.shields.io/badge/marketplace-ar--ec--action-green?logo=github)](https://github.com/marketplace/actions/arvancloud-edge-computing-action)
 
-Deploy a Edge Computing JS bundle to [Arvancloud Edge Computing](https://www.arvancloud.ir/en/products/edge-computing) from a GitHub workflow.
+Deploy an Edge Computing JS bundle to [Arvancloud Edge Computing](https://www.arvancloud.ir/en/products/edge-computing) from a GitHub workflow.
 
 ## Usage
 
@@ -28,7 +28,8 @@ jobs:
 
       - run: npm ci && npm run build
 
-      - uses: hatamiarash7/ar-ec-action@v1
+      - id: deploy
+        uses: hatamiarash7/ar-ec-action@v1
         with:
           auth: ${{ secrets.ARVAN_API_KEY }}
           app: my-edge-app
@@ -38,7 +39,7 @@ jobs:
       - run: echo "Deployment ${{ steps.deploy.outputs.id }} is ${{ steps.deploy.outputs.status }}"
 ```
 
-The bundle must exist on the runner's working directory before this step, so either commit it or build it in an earlier step.
+The bundle must exist in the runner's working directory before this step runs, so either commit it or build it in an earlier step. The step needs its `id` (here `deploy`) for the outputs to be readable afterwards.
 
 ## Inputs
 
@@ -97,11 +98,7 @@ The CLI stays silent when the API rejects the credentials. Confirm that the toke
 
 Don't be shy and reach out to us if you want to contribute 😉
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the repository layout, the local checks and the release process. This project is released under the [MIT License](LICENSE).
 
 ## Issues
 

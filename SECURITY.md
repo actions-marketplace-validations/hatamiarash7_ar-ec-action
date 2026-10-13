@@ -1,5 +1,9 @@
 # Security policy
 
+## Scope
+
+This policy covers the `ar-ec-action` repository: the action metadata, the Docker image and the entrypoint script. Problems with the ArvanCloud platform or the `arvan` CLI itself should be reported to ArvanCloud instead.
+
 ## Supported versions
 
 Fixes are released for the latest major tag only.
