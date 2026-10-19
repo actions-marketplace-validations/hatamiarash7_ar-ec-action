@@ -6,6 +6,7 @@ tmp/
 # Editors
 .idea/
 *.swp
+*.orig
 .DS_Store
 
 # Never commit credentials

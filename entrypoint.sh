@@ -137,6 +137,7 @@ main() {
 
 	print_header
 	validate_inputs
+	[ -x "$ARVAN_BIN" ] || fail "The ArvanCloud CLI was not found or is not executable at '${ARVAN_BIN}'. The image may be broken, or ARVAN_BIN points to the wrong file."
 	print_context
 	deploy
 	write_summary

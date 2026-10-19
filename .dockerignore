@@ -1,2 +1,4 @@
+# The image only needs the entrypoint script. Ignoring everything else keeps
+# the build context small and prevents accidental copies into the image.
 *
 !entrypoint.sh

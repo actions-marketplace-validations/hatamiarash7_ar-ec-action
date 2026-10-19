@@ -5,6 +5,25 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- End-to-end CI check for a successful deployment, using a stubbed CLI so the deployment API is never contacted.
+- Pull request template and sponsor links for the repository.
+
+### Changed
+
+- Fail with a clear error when the `arvan` CLI binary is missing or not executable.
+- Copy `entrypoint.sh` with `--chmod` instead of a separate `chmod` layer.
+- Parametrize the image version label (`ACTION_VERSION` build argument) and align it with the current release.
+
+### Fixed
+
+- Add the missing step `id` to the README workflow example so the documented outputs resolve.
+- Point the local test instructions at a workspace directory that actually gets created.
+- Document the markdownlint check that CI enforces alongside the other local checks.
+
 ## [1.0.3]
 
 ### Changed
